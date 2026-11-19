@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import {
   InfiniteScrollCustomEvent,
+  ModalController,
   SearchbarCustomEvent,
   SegmentCustomEvent,
 } from '@ionic/angular';
 import { PokemonItem } from '../models/pokemon.model';
 import { PokemonService } from '../services/pokemon.service';
+import { DetallePokemonComponent } from '../components/detalle-pokemon/detalle-pokemon.component';
 
 @Component({
   selector: 'app-tab1',
@@ -35,7 +37,10 @@ export class Tab1Page implements OnInit {
   cargando = true;
   error = false;
 
-  constructor(private pokemonService: PokemonService) {}
+    constructor(
+    private pokemonService: PokemonService,
+    private modalCtrl: ModalController
+  ) {}
 
   ngOnInit() {
     this.cargarGeneracion(this.generacionActual);
@@ -82,7 +87,13 @@ export class Tab1Page implements OnInit {
     this.mostrados += 30;
     ev.target.complete();
   }
-
+  async abrirDetalle(pokemon: PokemonItem) {
+    const modal = await this.modalCtrl.create({
+      component: DetallePokemonComponent,
+      componentProps: { pokemon },
+    });
+    await modal.present();
+  }
   private aplicarFiltro() {
     this.mostrados = 30;
     this.filtrados = this.pokemons.filter(

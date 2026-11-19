@@ -40,7 +40,7 @@
   <ion-grid *ngIf="!cargando && !error">
     <ion-row>
       <ion-col size="4" *ngFor="let p of visibles">
-        <div class="tarjeta">
+          <div class="tarjeta" (click)="abrirDetalle(p)">
           <img [src]="p.imagen" [alt]="p.name" loading="lazy" />
           <ion-badge color="medium">#{{ p.id }}</ion-badge>
           <p class="nombre">{{ p.name | titlecase }}</p>
