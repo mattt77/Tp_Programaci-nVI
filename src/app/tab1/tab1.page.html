@@ -1,17 +1,55 @@
-<ion-header [translucent]="true">
+<ion-header>
+  <ion-toolbar color="danger">
+    <ion-title>Pokédex</ion-title>
+  </ion-toolbar>
   <ion-toolbar>
-    <ion-title>
-      Tab 1
-    </ion-title>
+    <ion-segment
+      [scrollable]="true"
+      [value]="generacionActual"
+      (ionChange)="cambiarGeneracion($event)"
+    >
+      <ion-segment-button *ngFor="let g of generaciones" [value]="g.id">
+        <ion-label>{{ g.etiqueta }}</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar
+      placeholder="Buscar por nombre o número"
+      (ionInput)="buscar($event)"
+    ></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <div class="centrado" *ngIf="cargando">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+  <div class="centrado" *ngIf="error">
+    <ion-text color="danger">
+      <p>No se pudieron cargar los Pokémon. Revisa tu conexión.</p>
+    </ion-text>
+    <ion-button (click)="cargarGeneracion(generacionActual)">Reintentar</ion-button>
+  </div>
+
+  <ion-text color="medium" *ngIf="!cargando && !error && filtrados.length === 0">
+    <p class="centrado">No se encontraron Pokémon.</p>
+  </ion-text>
+
+  <ion-grid *ngIf="!cargando && !error">
+    <ion-row>
+      <ion-col size="4" *ngFor="let p of visibles">
+        <div class="tarjeta">
+          <img [src]="p.imagen" [alt]="p.name" loading="lazy" />
+          <ion-badge color="medium">#{{ p.id }}</ion-badge>
+          <p class="nombre">{{ p.name | titlecase }}</p>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-infinite-scroll (ionInfinite)="cargarMas($event)" [disabled]="!hayMas">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
