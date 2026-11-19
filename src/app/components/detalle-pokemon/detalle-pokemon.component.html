@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar color="danger">
+    <ion-title>{{ pokemon.name | titlecase }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrar()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div *ngIf="cargando">
+    <ion-skeleton-text [animated]="true" class="sk-imagen"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" style="width: 60%"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" style="width: 80%"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" style="width: 70%"></ion-skeleton-text>
+  </div>
+
+  <div class="centrado" *ngIf="error">
+    <ion-text color="danger">
+      <p>No se pudo cargar el detalle del Pokémon.</p>
+    </ion-text>
+    <ion-button (click)="cargar()">Reintentar</ion-button>
+  </div>
+
+  <div *ngIf="detalle && !cargando && !error">
+    <div class="cabecera">
+      <img [src]="detalle.imagen" [alt]="detalle.name" />
+      <ion-badge color="medium">#{{ detalle.id }}</ion-badge>
+      <div>
+        <ion-chip *ngFor="let t of detalle.tipos">
+          <ion-label>{{ nombres.tipo(t) }}</ion-label>
+        </ion-chip>
+      </div>
+      <p>Altura: {{ detalle.altura }} m · Peso: {{ detalle.peso }} kg</p>
+    </div>
+
+    <h3>Stats base</h3>
+    <div class="stat" *ngFor="let s of detalle.stats">
+      <span class="stat-nombre">{{ etiquetas[s.clave] }}</span>
+      <span class="stat-valor">{{ s.valor }}</span>
+      <ion-progress-bar [value]="porcentaje(s.valor)"></ion-progress-bar>
+    </div>
+
+    <h3>Debilidades</h3>
+    <ion-chip color="danger" *ngFor="let d of debilidades">
+      <ion-label>{{ nombres.tipo(d.tipo) }} ×{{ d.multiplicador }}</ion-label>
+    </ion-chip>
+    <p *ngIf="debilidades.length === 0">Sin debilidades.</p>
+
+    <h3>Resistencias</h3>
+    <ion-chip color="success" *ngFor="let r of resistencias">
+      <ion-label>{{ nombres.tipo(r.tipo) }} ×{{ r.multiplicador }}</ion-label>
+    </ion-chip>
+    <p *ngIf="resistencias.length === 0">Sin resistencias.</p>
+
+    <ng-container *ngIf="inmunidades.length > 0">
+      <h3>Inmunidades</h3>
+      <ion-chip color="medium" *ngFor="let i of inmunidades">
+        <ion-label>{{ nombres.tipo(i.tipo) }}</ion-label>
+      </ion-chip>
+    </ng-container>
+  </div>
+</ion-content>

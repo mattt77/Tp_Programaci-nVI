@@ -1,0 +1,36 @@
+.centrado {
+  text-align: center;
+  padding: 24px 16px;
+}
+
+.sk-imagen {
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 16px;
+}
+
+.cabecera {
+  text-align: center;
+
+  img {
+    width: 180px;
+    height: 180px;
+  }
+}
+
+.stat {
+  display: grid;
+  grid-template-columns: 90px 40px 1fr;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+
+  .stat-nombre {
+    font-size: 13px;
+  }
+
+  .stat-valor {
+    font-weight: 600;
+    text-align: right;
+  }
+}

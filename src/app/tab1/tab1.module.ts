@@ -1,3 +1,4 @@
+import { DetallePokemonComponent } from '../components/detalle-pokemon/detalle-pokemon.component';
 import { IonicModule } from '@ionic/angular/lazy';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -15,6 +16,6 @@ import { Tab1PageRoutingModule } from './tab1-routing.module';
     ExploreContainerComponentModule,
     Tab1PageRoutingModule
   ],
-  declarations: [Tab1Page]
+  declarations: [Tab1Page, DetallePokemonComponent]
 })
 export class Tab1PageModule {}
