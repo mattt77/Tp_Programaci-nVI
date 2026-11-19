@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
-import { PokemonItem } from '../models/pokemon.model';
+import { PokemonDetalle, PokemonItem } from '../models/pokemon.model';
 
 @Injectable({ providedIn: 'root' })
 export class PokemonService {
@@ -16,7 +16,7 @@ export class PokemonService {
     if (guardado) {
       return of(guardado);
     }
-
+    
     return this.http
       .get<any>(`${environment.pokeApiUrl}/generation/${numero}`)
       .pipe(
@@ -34,5 +34,23 @@ export class PokemonService {
         ),
         tap((lista) => this.cacheGeneraciones.set(numero, lista))
       );
+  }
+    getDetalle(id: number): Observable<PokemonDetalle> {
+    return this.http.get<any>(`${environment.pokeApiUrl}/pokemon/${id}`).pipe(
+      map(
+        (p): PokemonDetalle => ({
+          id: p.id,
+          name: p.name,
+          imagen: `${environment.spritesUrl}/other/official-artwork/${p.id}.png`,
+          tipos: p.types.map((t: any) => t.type.name),
+          altura: p.height / 10,
+          peso: p.weight / 10,
+          stats: p.stats.map((s: any) => ({
+            clave: s.stat.name,
+            valor: s.base_stat,
+          })),
+        })
+      )
+    );
   }
 }
