@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import {
   InfiniteScrollCustomEvent,
   ModalController,
@@ -42,7 +42,8 @@ export class Tab1Page implements OnInit {
   constructor(
     private pokemonService: PokemonService,
     private modalCtrl: ModalController,
-    public idioma: IdiomaService
+    public idioma: IdiomaService,
+    private cdr: ChangeDetectorRef
   ) {
     addIcons({ language });
   }
@@ -70,11 +71,13 @@ export class Tab1Page implements OnInit {
         this.pokemons = lista;
         this.aplicarFiltro();
         this.cargando = false;
+        this.cdr.markForCheck();
       },
       error: () => {
         if (numero !== this.generacionActual) return;
         this.cargando = false;
         this.error = true;
+        this.cdr.markForCheck();
       },
     });
   }
