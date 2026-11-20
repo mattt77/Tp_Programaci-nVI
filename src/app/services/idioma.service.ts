@@ -29,8 +29,8 @@ export class IdiomaService {
     } catch {}
   }
 
-  t(clave: ClaveTexto): string {
-    return TEXTOS[this.idioma][clave];
+  t(clave: string): string {
+    return TEXTOS[this.idioma][clave as ClaveTexto] ?? clave;
   }
 
   private leer(): string | null {
