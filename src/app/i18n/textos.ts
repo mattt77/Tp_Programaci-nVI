@@ -24,6 +24,7 @@ const es = {
   'stat.special-attack': 'At. Esp.',
   'stat.special-defense': 'Def. Esp.',
   'stat.speed': 'Velocidad',
+  'comun.cancelar': 'Cancelar',
 };
 
 export type ClaveTexto = keyof typeof es;
@@ -52,6 +53,7 @@ const en: Record<ClaveTexto, string> = {
   'stat.special-attack': 'Sp. Atk',
   'stat.special-defense': 'Sp. Def',
   'stat.speed': 'Speed',
+  'comun.cancelar': 'Cancel',
 };
 
 export const TEXTOS: Record<Idioma, Record<ClaveTexto, string>> = { es, en };
