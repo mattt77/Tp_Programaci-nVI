@@ -3,6 +3,7 @@ export interface PokemonItem {
   name: string;
   imagen: string;
 }
+
 export interface StatBase {
   clave: string;
   valor: number;
@@ -17,12 +18,3 @@ export interface PokemonDetalle {
   peso: number;
   stats: StatBase[];
 }
-
-export const ETIQUETAS_STATS: Record<string, string> = {
-  hp: 'PS',
-  attack: 'Ataque',
-  defense: 'Defensa',
-  'special-attack': 'At. Esp.',
-  'special-defense': 'Def. Esp.',
-  speed: 'Velocidad',
-};

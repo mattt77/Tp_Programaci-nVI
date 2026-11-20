@@ -1,11 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { forkJoin } from 'rxjs';
-import {
-  ETIQUETAS_STATS,
-  PokemonDetalle,
-  PokemonItem,
-} from '../../models/pokemon.model';
+import { PokemonDetalle, PokemonItem } from '../../models/pokemon.model';
 import { NombresService } from '../../services/nombres.service';
 import { PokemonService } from '../../services/pokemon.service';
 import { Efectividad, TiposService } from '../../services/tipos.service';
@@ -23,7 +19,6 @@ export class DetallePokemonComponent implements OnInit {
   debilidades: Efectividad[] = [];
   resistencias: Efectividad[] = [];
   inmunidades: Efectividad[] = [];
-  etiquetas = ETIQUETAS_STATS;
 
   cargando = true;
   error = false;
@@ -32,9 +27,9 @@ export class DetallePokemonComponent implements OnInit {
     private modalCtrl: ModalController,
     private pokemonService: PokemonService,
     private tiposService: TiposService,
-    public nombres: NombresService
+    public nombres: NombresService,
+    private cdr: ChangeDetectorRef
   ) {}
-
   ngOnInit() {
     this.cargar();
   }
@@ -57,10 +52,12 @@ export class DetallePokemonComponent implements OnInit {
         );
         this.inmunidades = todas.filter((e) => e.multiplicador === 0);
         this.cargando = false;
+        this.cdr.markForCheck();
       },
       error: () => {
         this.cargando = false;
         this.error = true;
+        this.cdr.markForCheck();
       },
     });
   }

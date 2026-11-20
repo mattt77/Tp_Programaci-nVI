@@ -2,7 +2,7 @@
   <ion-toolbar color="danger">
     <ion-title>{{ pokemon.name | titlecase }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="cerrar()">Cerrar</ion-button>
+      <ion-button (click)="cerrar()">{{ 'comun.cerrar' | t }}</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -20,9 +20,9 @@
   @if (error) {
     <div class="centrado">
       <ion-text color="danger">
-        <p>No se pudo cargar el detalle del Pokémon.</p>
+        <p>{{ 'detalle.error' | t }}</p>
       </ion-text>
-      <ion-button (click)="cargar()">Reintentar</ion-button>
+      <ion-button (click)="cargar()">{{ 'comun.reintentar' | t }}</ion-button>
     </div>
   }
 
@@ -38,37 +38,44 @@
             </ion-chip>
           }
         </div>
-        <p>Altura: {{ detalle.altura }} m · Peso: {{ detalle.peso }} kg</p>
+        <p>
+          {{ 'detalle.altura' | t }}: {{ detalle.altura }} m ·
+          {{ 'detalle.peso' | t }}: {{ detalle.peso }} kg
+        </p>
       </div>
-      <h3>Stats base</h3>
-      @for (s of detalle.stats; track s) {
+
+      <h3>{{ 'detalle.stats' | t }}</h3>
+      @for (s of detalle.stats; track s.clave) {
         <div class="stat">
-          <span class="stat-nombre">{{ etiquetas[s.clave] }}</span>
+          <span class="stat-nombre">{{ 'stat.' + s.clave | t }}</span>
           <span class="stat-valor">{{ s.valor }}</span>
           <ion-progress-bar [value]="porcentaje(s.valor)"></ion-progress-bar>
         </div>
       }
-      <h3>Debilidades</h3>
-      @for (d of debilidades; track d) {
+
+      <h3>{{ 'detalle.debilidades' | t }}</h3>
+      @for (d of debilidades; track d.tipo) {
         <ion-chip color="danger">
           <ion-label>{{ nombres.tipo(d.tipo) }} ×{{ d.multiplicador }}</ion-label>
         </ion-chip>
       }
       @if (debilidades.length === 0) {
-        <p>Sin debilidades.</p>
+        <p>{{ 'detalle.sinDebilidades' | t }}</p>
       }
-      <h3>Resistencias</h3>
-      @for (r of resistencias; track r) {
+
+      <h3>{{ 'detalle.resistencias' | t }}</h3>
+      @for (r of resistencias; track r.tipo) {
         <ion-chip color="success">
           <ion-label>{{ nombres.tipo(r.tipo) }} ×{{ r.multiplicador }}</ion-label>
         </ion-chip>
       }
       @if (resistencias.length === 0) {
-        <p>Sin resistencias.</p>
+        <p>{{ 'detalle.sinResistencias' | t }}</p>
       }
+
       @if (inmunidades.length > 0) {
-        <h3>Inmunidades</h3>
-        @for (i of inmunidades; track i) {
+        <h3>{{ 'detalle.inmunidades' | t }}</h3>
+        @for (i of inmunidades; track i.tipo) {
           <ion-chip color="medium">
             <ion-label>{{ nombres.tipo(i.tipo) }}</ion-label>
           </ion-chip>
