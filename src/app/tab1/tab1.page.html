@@ -1,5 +1,5 @@
 <ion-header>
-    <ion-toolbar color="danger">
+  <ion-toolbar color="danger">
     <ion-title>Pokédex</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="idioma.elegir(false)">
@@ -12,8 +12,8 @@
       [scrollable]="true"
       [value]="generacionActual"
       (ionChange)="cambiarGeneracion($event)"
-      >
-      @for (g of generaciones; track g) {
+    >
+      @for (g of generaciones; track g.id) {
         <ion-segment-button [value]="g.id">
           <ion-label>{{ g.etiqueta }}</ion-label>
         </ion-segment-button>
@@ -22,7 +22,7 @@
   </ion-toolbar>
   <ion-toolbar>
     <ion-searchbar
-      placeholder="Buscar por nombre o número"
+      [placeholder]="'pokedex.buscar' | t"
       (ionInput)="buscar($event)"
     ></ion-searchbar>
   </ion-toolbar>
@@ -38,22 +38,24 @@
   @if (error) {
     <div class="centrado">
       <ion-text color="danger">
-        <p>No se pudieron cargar los Pokémon. Revisa tu conexión.</p>
+        <p>{{ 'pokedex.error' | t }}</p>
       </ion-text>
-      <ion-button (click)="cargarGeneracion(generacionActual)">Reintentar</ion-button>
+      <ion-button (click)="cargarGeneracion(generacionActual)">
+        {{ 'comun.reintentar' | t }}
+      </ion-button>
     </div>
   }
 
   @if (!cargando && !error && filtrados.length === 0) {
     <ion-text color="medium">
-      <p class="centrado">No se encontraron Pokémon.</p>
+      <p class="centrado">{{ 'pokedex.vacio' | t }}</p>
     </ion-text>
   }
 
   @if (!cargando && !error) {
     <ion-grid>
       <ion-row>
-        @for (p of visibles; track p) {
+        @for (p of visibles; track p.id) {
           <ion-col size="4">
             <div class="tarjeta" (click)="abrirDetalle(p)">
               <img [src]="p.imagen" [alt]="p.name" loading="lazy" />

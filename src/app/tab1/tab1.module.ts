@@ -9,7 +9,7 @@ import {
   IonContent,
   IonGrid,
   IonHeader,
-  IonIcon, 
+  IonIcon,
   IonInfiniteScroll,
   IonInfiniteScrollContent,
   IonLabel,
@@ -28,11 +28,13 @@ import {
 import { Tab1Page } from './tab1.page';
 import { Tab1PageRoutingModule } from './tab1-routing.module';
 import { DetallePokemonComponent } from '../components/detalle-pokemon/detalle-pokemon.component';
+import { TraducirPipe } from '../pipes/traducir.pipe';
 
 @NgModule({
   imports: [
     CommonModule,
     Tab1PageRoutingModule,
+    TraducirPipe,
     IonBadge,
     IonButton,
     IonButtons,
@@ -41,7 +43,7 @@ import { DetallePokemonComponent } from '../components/detalle-pokemon/detalle-p
     IonContent,
     IonGrid,
     IonHeader,
-    IonIcon, 
+    IonIcon,
     IonInfiniteScroll,
     IonInfiniteScrollContent,
     IonLabel,
