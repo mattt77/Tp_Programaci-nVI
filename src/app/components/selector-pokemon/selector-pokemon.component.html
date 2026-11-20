@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar color="danger">
+    <ion-title>{{ 'selector.titulo' | t }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrar()">{{ 'comun.cerrar' | t }}</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar
+      [placeholder]="'pokedex.buscar' | t"
+      [debounce]="250"
+      (ionInput)="buscar($event)"
+    ></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  @if (cargando) {
+    <div class="centrado">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  }
+
+  @if (error) {
+    <div class="centrado">
+      <ion-text color="danger">
+        <p>{{ 'selector.error' | t }}</p>
+      </ion-text>
+      <ion-button (click)="cargar()">{{ 'comun.reintentar' | t }}</ion-button>
+    </div>
+  }
+
+  @if (!cargando && !error) {
+    <ion-list>
+      @for (p of visibles; track p.id) {
+        <ion-item [button]="true" (click)="elegir(p)">
+          <ion-thumbnail slot="start">
+            <img [src]="p.imagen" [alt]="p.name" loading="lazy" />
+          </ion-thumbnail>
+          <ion-label>{{ p.name | titlecase }}</ion-label>
+          <ion-note slot="end">#{{ p.id }}</ion-note>
+        </ion-item>
+      } @empty {
+        <p class="centrado">{{ 'pokedex.vacio' | t }}</p>
+      }
+    </ion-list>
+  }
+
+  <ion-infinite-scroll (ionInfinite)="cargarMas($event)" [disabled]="!hayMas">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

@@ -1,0 +1,9 @@
+.centrado {
+  text-align: center;
+  padding: 24px 16px;
+}
+
+ion-thumbnail img {
+  object-fit: contain;
+  image-rendering: pixelated;
+}
