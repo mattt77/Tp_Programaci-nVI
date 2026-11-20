@@ -17,4 +17,5 @@ export interface PokemonDetalle {
   altura: number;
   peso: number;
   stats: StatBase[];
+  ataques: string[]; // claves en inglés de los ataques que puede aprender
 }

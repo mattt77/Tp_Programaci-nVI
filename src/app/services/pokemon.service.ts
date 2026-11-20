@@ -59,6 +59,7 @@ export class PokemonService {
             clave: s.stat.name,
             valor: s.base_stat,
           })),
+          ataques: p.moves.map((m: any) => m.move.name),
         })
       ),
       tap((detalle) => this.cacheDetalles.set(id, detalle))
