@@ -10,13 +10,14 @@ import {
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { add, create, trash } from 'ionicons/icons';
-import { Equipo, MAX_MIEMBROS } from '../../models/equipo.model';
+import { Equipo, MAX_MIEMBROS, MiembroEquipo } from '../../models/equipo.model'; // ← MiembroEquipo nuevo
 import { PokemonItem } from '../../models/pokemon.model';
 import { EquipoService } from '../../services/equipo.service';
 import { IdiomaService } from '../../services/idioma.service';
 import { NombresService } from '../../services/nombres.service';
 import { PokemonService } from '../../services/pokemon.service';
 import { SelectorPokemonComponent } from '../../components/selector-pokemon/selector-pokemon.component';
+import { EditorMiembroComponent } from '../../components/editor-miembro/editor-miembro.component'; // ← nuevo
 
 @Component({
   selector: 'app-editor-equipo',
@@ -47,7 +48,7 @@ export class EditorEquipoPage implements OnInit {
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id') ?? '';
-    // Los nombres traducidos de los tipos se usan en los chips
+    // Los nombres traducidos de los tipos y ataques se usan en la lista
     this.nombres.cargar().subscribe(() => this.cdr.markForCheck());
   }
 
@@ -129,6 +130,30 @@ export class EditorEquipoPage implements OnInit {
         await toast.present();
       },
     });
+  }
+
+  // ← nuevo: abre el editor de un Pokémon del equipo
+  async editar(indice: number) {
+    const equipo = this.equipo;
+    if (!equipo) return;
+
+    const modal = await this.modalCtrl.create({
+      component: EditorMiembroComponent,
+      // Se pasa una copia: si se cancela, el original no cambia
+      componentProps: { miembro: structuredClone(equipo.miembros[indice]) },
+    });
+    await modal.present();
+    const { data, role } = await modal.onWillDismiss<MiembroEquipo>();
+    if (role !== 'guardado' || !data) return;
+
+    equipo.miembros[indice] = data;
+    this.equipoService.guardar(equipo);
+    this.refrescar();
+  }
+
+  // ← nuevo: texto con los ataques del Pokémon para mostrar en la lista
+  resumenAtaques(miembro: MiembroEquipo): string {
+    return miembro.ataques.map((a) => this.nombres.ataque(a)).join(' · ');
   }
 
   async quitar(indice: number, deslizable: IonItemSliding) {

@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
+  IonAccordion,
+  IonAccordionGroup,
   IonAvatar,
   IonBackButton,
   IonButton,
@@ -11,6 +13,7 @@ import {
   IonIcon,
   IonInfiniteScroll,
   IonInfiniteScrollContent,
+  IonInput,
   IonItem,
   IonItemOption,
   IonItemOptions,
@@ -18,7 +21,10 @@ import {
   IonLabel,
   IonList,
   IonNote,
+  IonRange,
   IonSearchbar,
+  IonSelect,
+  IonSelectOption,
   IonSpinner,
   IonText,
   IonThumbnail,
@@ -29,6 +35,7 @@ import {
 import { EditorEquipoPage } from './editor-equipo.page';
 import { EditorEquipoPageRoutingModule } from './editor-equipo-routing.module';
 import { SelectorPokemonComponent } from '../../components/selector-pokemon/selector-pokemon.component';
+import { EditorMiembroComponent } from '../../components/editor-miembro/editor-miembro.component';
 import { TraducirPipe } from '../../pipes/traducir.pipe';
 
 @NgModule({
@@ -36,6 +43,8 @@ import { TraducirPipe } from '../../pipes/traducir.pipe';
     CommonModule,
     EditorEquipoPageRoutingModule,
     TraducirPipe,
+    IonAccordion,
+    IonAccordionGroup,
     IonAvatar,
     IonBackButton,
     IonButton,
@@ -46,6 +55,7 @@ import { TraducirPipe } from '../../pipes/traducir.pipe';
     IonIcon,
     IonInfiniteScroll,
     IonInfiniteScrollContent,
+    IonInput,
     IonItem,
     IonItemOption,
     IonItemOptions,
@@ -53,13 +63,16 @@ import { TraducirPipe } from '../../pipes/traducir.pipe';
     IonLabel,
     IonList,
     IonNote,
+    IonRange,
     IonSearchbar,
+    IonSelect,
+    IonSelectOption,
     IonSpinner,
     IonText,
     IonThumbnail,
     IonTitle,
     IonToolbar,
   ],
-  declarations: [EditorEquipoPage, SelectorPokemonComponent],
+  declarations: [EditorEquipoPage, SelectorPokemonComponent, EditorMiembroComponent],
 })
 export class EditorEquipoPageModule {}

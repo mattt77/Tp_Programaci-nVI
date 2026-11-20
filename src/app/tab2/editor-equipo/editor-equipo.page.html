@@ -17,7 +17,7 @@
     <ion-list>
       @for (m of equipo.miembros; track $index; let i = $index) {
         <ion-item-sliding #deslizable>
-          <ion-item>
+          <ion-item [button]="true" [detail]="true" (click)="editar(i)">
             <ion-avatar slot="start">
               <img [src]="m.imagen" [alt]="m.name" />
             </ion-avatar>
@@ -30,6 +30,9 @@
                   </ion-chip>
                 }
               </div>
+              @if (m.ataques.length > 0) {
+                <p class="ataques">{{ resumenAtaques(m) }}</p>
+              }
             </ion-label>
             <ion-note slot="end">{{ 'editor.nivel' | t }} {{ m.nivel }}</ion-note>
           </ion-item>
