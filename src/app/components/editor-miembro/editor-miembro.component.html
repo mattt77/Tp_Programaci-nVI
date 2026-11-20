@@ -1,0 +1,138 @@
+<ion-header>
+  <ion-toolbar color="danger">
+    <ion-buttons slot="start">
+      <ion-button (click)="cancelar()">{{ 'comun.cancelar' | t }}</ion-button>
+    </ion-buttons>
+    <ion-title>{{ miembro.name | titlecase }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button [strong]="true" [disabled]="cargando || error" (click)="guardar()">
+        {{ 'comun.guardar' | t }}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  @if (cargando) {
+    <div class="centrado">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  }
+
+  @if (error) {
+    <div class="centrado">
+      <ion-text color="danger">
+        <p>{{ 'miembro.error' | t }}</p>
+      </ion-text>
+      <ion-button (click)="cargar()">{{ 'comun.reintentar' | t }}</ion-button>
+    </div>
+  }
+
+  @if (!cargando && !error) {
+    <div class="cabecera">
+      <img [src]="miembro.imagen" [alt]="miembro.name" />
+    </div>
+
+    <ion-accordion-group [multiple]="true" [value]="['general', 'ataques']">
+      <!-- Nivel y naturaleza -->
+      <ion-accordion value="general">
+        <ion-item slot="header">
+          <ion-label>{{ 'miembro.general' | t }}</ion-label>
+        </ion-item>
+        <div slot="content" class="ion-padding">
+          <p class="etiqueta">{{ 'miembro.nivel' | t }}: {{ miembro.nivel }}</p>
+          <ion-range
+            [min]="1"
+            [max]="100"
+            [pin]="true"
+            [value]="miembro.nivel"
+            (ionChange)="cambiarNivel($event)"
+          ></ion-range>
+
+          <ion-item lines="none">
+            <ion-select
+              [label]="'miembro.naturaleza' | t"
+              labelPlacement="stacked"
+              [value]="miembro.naturaleza"
+              (ionChange)="cambiarNaturaleza($event)"
+            >
+              @for (n of naturalezas; track n) {
+                <ion-select-option [value]="n">{{ nombres.naturaleza(n) }}</ion-select-option>
+              }
+            </ion-select>
+          </ion-item>
+        </div>
+      </ion-accordion>
+
+      <!-- Ataques -->
+      <ion-accordion value="ataques">
+        <ion-item slot="header">
+          <ion-label>{{ 'miembro.ataques' | t }}</ion-label>
+        </ion-item>
+        <div slot="content">
+          @for (i of posiciones; track i) {
+            <ion-item>
+              <ion-select
+                [label]="('miembro.ataque' | t) + ' ' + (i + 1)"
+                labelPlacement="stacked"
+                [value]="slots[i]"
+                (ionChange)="cambiarAtaque(i, $event)"
+              >
+                <ion-select-option value="">{{ 'miembro.ninguno' | t }}</ion-select-option>
+                @for (a of opciones(i); track a) {
+                  <ion-select-option [value]="a">{{ nombres.ataque(a) }}</ion-select-option>
+                }
+              </ion-select>
+            </ion-item>
+          }
+        </div>
+      </ion-accordion>
+
+      <!-- EVs -->
+      <ion-accordion value="evs">
+        <ion-item slot="header">
+          <ion-label>{{ 'miembro.evs' | t }}</ion-label>
+          <ion-note slot="end">{{ 'miembro.evsRestantes' | t }}: {{ evsRestantes }}</ion-note>
+        </ion-item>
+        <div slot="content" class="ion-padding">
+          @for (c of claves; track c) {
+            <div class="stat">
+              <span>{{ 'stat.' + c | t }}</span>
+              <ion-range
+                [min]="0"
+                [max]="maxEv"
+                [step]="4"
+                [pin]="true"
+                [value]="miembro.evs[c]"
+                (ionChange)="cambiarEv(c, $event)"
+              ></ion-range>
+              <span class="valor">{{ miembro.evs[c] }}</span>
+            </div>
+          }
+        </div>
+      </ion-accordion>
+
+      <!-- IVs -->
+      <ion-accordion value="ivs">
+        <ion-item slot="header">
+          <ion-label>{{ 'miembro.ivs' | t }}</ion-label>
+        </ion-item>
+        <div slot="content">
+          <p class="ayuda">{{ 'miembro.ivsAyuda' | t }}</p>
+          @for (c of claves; track c) {
+            <ion-item>
+              <ion-input
+                type="number"
+                [min]="0"
+                [max]="31"
+                [label]="'stat.' + c | t"
+                [value]="miembro.ivs[c]"
+                (ionChange)="cambiarIv(c, $event)"
+              ></ion-input>
+            </ion-item>
+          }
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+  }
+</ion-content>
