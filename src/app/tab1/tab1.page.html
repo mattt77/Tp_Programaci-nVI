@@ -1,6 +1,11 @@
 <ion-header>
-  <ion-toolbar color="danger">
+    <ion-toolbar color="danger">
     <ion-title>Pokédex</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="idioma.elegir(false)">
+        <ion-icon slot="icon-only" name="language"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
   <ion-toolbar>
     <ion-segment

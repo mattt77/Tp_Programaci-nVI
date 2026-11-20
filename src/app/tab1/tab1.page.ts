@@ -8,7 +8,9 @@ import {
 import { PokemonItem } from '../models/pokemon.model';
 import { PokemonService } from '../services/pokemon.service';
 import { DetallePokemonComponent } from '../components/detalle-pokemon/detalle-pokemon.component';
-
+import { addIcons } from 'ionicons';
+import { language } from 'ionicons/icons';
+import { IdiomaService } from '../services/idioma.service';
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
@@ -37,10 +39,13 @@ export class Tab1Page implements OnInit {
   cargando = true;
   error = false;
 
-    constructor(
+  constructor(
     private pokemonService: PokemonService,
-    private modalCtrl: ModalController
-  ) {}
+    private modalCtrl: ModalController,
+    public idioma: IdiomaService
+  ) {
+    addIcons({ language });
+  }
 
   ngOnInit() {
     this.cargarGeneracion(this.generacionActual);
