@@ -1,21 +1,59 @@
-import { DetallePokemonComponent } from '../components/detalle-pokemon/detalle-pokemon.component';
-import { IonicModule } from '@ionic/angular/lazy';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Tab1Page } from './tab1.page';
-import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
+import {
+  IonBadge,
+  IonButton,
+  IonButtons,
+  IonChip,
+  IonCol,
+  IonContent,
+  IonGrid,
+  IonHeader,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent,
+  IonLabel,
+  IonProgressBar,
+  IonRow,
+  IonSearchbar,
+  IonSegment,
+  IonSegmentButton,
+  IonSkeletonText,
+  IonSpinner,
+  IonText,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/angular';
 
+import { Tab1Page } from './tab1.page';
 import { Tab1PageRoutingModule } from './tab1-routing.module';
+import { DetallePokemonComponent } from '../components/detalle-pokemon/detalle-pokemon.component';
 
 @NgModule({
   imports: [
-    IonicModule,
     CommonModule,
-    FormsModule,
-    ExploreContainerComponentModule,
-    Tab1PageRoutingModule
+    Tab1PageRoutingModule,
+    IonBadge,
+    IonButton,
+    IonButtons,
+    IonChip,
+    IonCol,
+    IonContent,
+    IonGrid,
+    IonHeader,
+    IonInfiniteScroll,
+    IonInfiniteScrollContent,
+    IonLabel,
+    IonProgressBar,
+    IonRow,
+    IonSearchbar,
+    IonSegment,
+    IonSegmentButton,
+    IonSkeletonText,
+    IonSpinner,
+    IonText,
+    IonTitle,
+    IonToolbar,
   ],
-  declarations: [Tab1Page, DetallePokemonComponent]
+  declarations: [Tab1Page, DetallePokemonComponent],
 })
 export class Tab1PageModule {}
