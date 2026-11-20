@@ -34,6 +34,15 @@ const es = {
   'equipos.sinPokemon': 'Sin Pokémon todavía',
   'equipos.ayudaBorrar': 'Desliza un equipo hacia la izquierda para borrarlo.',
   'equipos.confirmarBorrar': '¿Borrar este equipo?',
+  'editor.agregar': 'Agregar Pokémon',
+  'editor.agregando': 'Agregando Pokémon...',
+  'editor.errorAgregar': 'No se pudo agregar el Pokémon. Intenta de nuevo.',
+  'editor.renombrar': 'Cambiar nombre',
+  'editor.nivel': 'Nv.',
+  'editor.ayudaQuitar': 'Desliza un Pokémon hacia la izquierda para quitarlo.',
+  'selector.titulo': 'Elegir Pokémon',
+  'selector.error': 'No se pudo cargar la lista de Pokémon.',
+  'comun.guardar': 'Guardar',
 };
 
 export type ClaveTexto = keyof typeof es;
@@ -72,6 +81,15 @@ const en: Record<ClaveTexto, string> = {
   'equipos.sinPokemon': 'No Pokémon yet',
   'equipos.ayudaBorrar': 'Swipe a team to the left to delete it.',
   'equipos.confirmarBorrar': 'Delete this team?',
+  'editor.agregar': 'Add Pokémon',
+  'editor.agregando': 'Adding Pokémon...',
+  'editor.errorAgregar': 'Could not add the Pokémon. Try again.',
+  'editor.renombrar': 'Rename',
+  'editor.nivel': 'Lv.',
+  'editor.ayudaQuitar': 'Swipe a Pokémon to the left to remove it.',
+  'selector.titulo': 'Choose Pokémon',
+  'selector.error': 'Could not load the Pokémon list.',
+  'comun.guardar': 'Save',
 };
 
 export const TEXTOS: Record<Idioma, Record<ClaveTexto, string>> = { es, en };
