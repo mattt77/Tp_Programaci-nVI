@@ -7,10 +7,12 @@
       [scrollable]="true"
       [value]="generacionActual"
       (ionChange)="cambiarGeneracion($event)"
-    >
-      <ion-segment-button *ngFor="let g of generaciones" [value]="g.id">
-        <ion-label>{{ g.etiqueta }}</ion-label>
-      </ion-segment-button>
+      >
+      @for (g of generaciones; track g) {
+        <ion-segment-button [value]="g.id">
+          <ion-label>{{ g.etiqueta }}</ion-label>
+        </ion-segment-button>
+      }
     </ion-segment>
   </ion-toolbar>
   <ion-toolbar>
@@ -22,32 +24,42 @@
 </ion-header>
 
 <ion-content>
-  <div class="centrado" *ngIf="cargando">
-    <ion-spinner name="crescent"></ion-spinner>
-  </div>
+  @if (cargando) {
+    <div class="centrado">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  }
 
-  <div class="centrado" *ngIf="error">
-    <ion-text color="danger">
-      <p>No se pudieron cargar los Pokémon. Revisa tu conexión.</p>
+  @if (error) {
+    <div class="centrado">
+      <ion-text color="danger">
+        <p>No se pudieron cargar los Pokémon. Revisa tu conexión.</p>
+      </ion-text>
+      <ion-button (click)="cargarGeneracion(generacionActual)">Reintentar</ion-button>
+    </div>
+  }
+
+  @if (!cargando && !error && filtrados.length === 0) {
+    <ion-text color="medium">
+      <p class="centrado">No se encontraron Pokémon.</p>
     </ion-text>
-    <ion-button (click)="cargarGeneracion(generacionActual)">Reintentar</ion-button>
-  </div>
+  }
 
-  <ion-text color="medium" *ngIf="!cargando && !error && filtrados.length === 0">
-    <p class="centrado">No se encontraron Pokémon.</p>
-  </ion-text>
-
-  <ion-grid *ngIf="!cargando && !error">
-    <ion-row>
-      <ion-col size="4" *ngFor="let p of visibles">
-          <div class="tarjeta" (click)="abrirDetalle(p)">
-          <img [src]="p.imagen" [alt]="p.name" loading="lazy" />
-          <ion-badge color="medium">#{{ p.id }}</ion-badge>
-          <p class="nombre">{{ p.name | titlecase }}</p>
-        </div>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  @if (!cargando && !error) {
+    <ion-grid>
+      <ion-row>
+        @for (p of visibles; track p) {
+          <ion-col size="4">
+            <div class="tarjeta" (click)="abrirDetalle(p)">
+              <img [src]="p.imagen" [alt]="p.name" loading="lazy" />
+              <ion-badge color="medium">#{{ p.id }}</ion-badge>
+              <p class="nombre">{{ p.name | titlecase }}</p>
+            </div>
+          </ion-col>
+        }
+      </ion-row>
+    </ion-grid>
+  }
 
   <ion-infinite-scroll (ionInfinite)="cargarMas($event)" [disabled]="!hayMas">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
