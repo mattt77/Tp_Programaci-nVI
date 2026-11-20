@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {
   InfiniteScrollCustomEvent,
-  ModalController,
   SearchbarCustomEvent,
   SegmentCustomEvent,
 } from '@ionic/angular';
+import { ModalController } from '@ionic/angular/lazy';
 import { PokemonItem } from '../models/pokemon.model';
 import { PokemonService } from '../services/pokemon.service';
 import { DetallePokemonComponent } from '../components/detalle-pokemon/detalle-pokemon.component';
