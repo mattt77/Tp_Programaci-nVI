@@ -25,6 +25,15 @@ const es = {
   'stat.special-defense': 'Def. Esp.',
   'stat.speed': 'Velocidad',
   'comun.cancelar': 'Cancelar',
+  'comun.crear': 'Crear',
+  'comun.eliminar': 'Eliminar',
+  'equipos.titulo': 'Mis equipos',
+  'equipos.vacio': 'Todavía no tienes equipos. Toca + para crear uno.',
+  'equipos.nuevo': 'Nuevo equipo',
+  'equipos.nombre': 'Nombre del equipo',
+  'equipos.sinPokemon': 'Sin Pokémon todavía',
+  'equipos.ayudaBorrar': 'Desliza un equipo hacia la izquierda para borrarlo.',
+  'equipos.confirmarBorrar': '¿Borrar este equipo?',
 };
 
 export type ClaveTexto = keyof typeof es;
@@ -54,6 +63,15 @@ const en: Record<ClaveTexto, string> = {
   'stat.special-defense': 'Sp. Def',
   'stat.speed': 'Speed',
   'comun.cancelar': 'Cancel',
+  'comun.crear': 'Create',
+  'comun.eliminar': 'Delete',
+  'equipos.titulo': 'My teams',
+  'equipos.vacio': "You don't have any teams yet. Tap + to create one.",
+  'equipos.nuevo': 'New team',
+  'equipos.nombre': 'Team name',
+  'equipos.sinPokemon': 'No Pokémon yet',
+  'equipos.ayudaBorrar': 'Swipe a team to the left to delete it.',
+  'equipos.confirmarBorrar': 'Delete this team?',
 };
 
 export const TEXTOS: Record<Idioma, Record<ClaveTexto, string>> = { es, en };
