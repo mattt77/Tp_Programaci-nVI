@@ -10,6 +10,7 @@ import {
 
 import { TabsPageRoutingModule } from './tabs-routing.module';
 import { TabsPage } from './tabs.page';
+import { TraducirPipe } from '../pipes/traducir.pipe'; 
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { TabsPage } from './tabs.page';
     IonIcon,
     IonLabel,
     TabsPageRoutingModule,
+    TraducirPipe, 
   ],
   declarations: [TabsPage],
 })
