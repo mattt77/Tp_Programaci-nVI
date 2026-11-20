@@ -59,7 +59,10 @@ export class NombresService {
   ataqueShowdown(clave: string): string {
     return this.buscar('ataques', clave, 'en');
   }
-
+  // Las 25 naturalezas (claves en inglés), tomadas del archivo de nombres
+  clavesNaturalezas(): string[] {
+    return Object.keys(this.datos.en.naturalezas);
+  }
   formatear(clave: string): string {
     return clave
       .split('-')
