@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { ApplicationRef, Injectable } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { ClaveTexto, Idioma, TEXTOS } from '../i18n/textos';
 
@@ -8,7 +8,7 @@ export class IdiomaService {
   private elegido = false;
   idioma: Idioma = 'es';
 
-  constructor(private alertCtrl: AlertController) {
+  constructor(private alertCtrl: AlertController, private appRef: ApplicationRef) {
     const guardado = this.leer();
     if (guardado === 'es' || guardado === 'en') {
       this.idioma = guardado;
@@ -49,6 +49,7 @@ export class IdiomaService {
     try {
       localStorage.setItem(this.clave, idioma);
     } catch {}
+    this.appRef.tick();
   }
 
   t(clave: string): string {
