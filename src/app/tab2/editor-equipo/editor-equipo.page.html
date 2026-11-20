@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar color="danger">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tab2"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ equipo?.nombre }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="renombrar()">
+        <ion-icon slot="icon-only" name="create"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  @if (equipo) {
+    <ion-list>
+      @for (m of equipo.miembros; track $index; let i = $index) {
+        <ion-item-sliding #deslizable>
+          <ion-item>
+            <ion-avatar slot="start">
+              <img [src]="m.imagen" [alt]="m.name" />
+            </ion-avatar>
+            <ion-label>
+              <h2>{{ m.name | titlecase }}</h2>
+              <div>
+                @for (t of m.tipos; track t) {
+                  <ion-chip class="tipo">
+                    <ion-label>{{ nombres.tipo(t) }}</ion-label>
+                  </ion-chip>
+                }
+              </div>
+            </ion-label>
+            <ion-note slot="end">{{ 'editor.nivel' | t }} {{ m.nivel }}</ion-note>
+          </ion-item>
+
+          <ion-item-options side="end">
+            <ion-item-option color="danger" (click)="quitar(i, deslizable)">
+              <ion-icon slot="icon-only" name="trash"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      }
+
+      @for (l of libres; track l) {
+        <ion-item [button]="true" class="libre" (click)="agregar()">
+          <ion-icon slot="start" name="add"></ion-icon>
+          <ion-label>{{ 'editor.agregar' | t }}</ion-label>
+        </ion-item>
+      }
+    </ion-list>
+
+    @if (equipo.miembros.length > 0) {
+      <p class="ayuda">{{ 'editor.ayudaQuitar' | t }}</p>
+    }
+  }
+</ion-content>

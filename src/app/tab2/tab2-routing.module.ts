@@ -6,11 +6,16 @@ const routes: Routes = [
   {
     path: '',
     component: Tab2Page,
-  }
+  },
+  {
+    path: 'equipo/:id',
+    loadChildren: () =>
+      import('./editor-equipo/editor-equipo.module').then((m) => m.EditorEquipoPageModule),
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class Tab2PageRoutingModule {}
