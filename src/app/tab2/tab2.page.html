@@ -14,7 +14,7 @@
     <ion-list>
       @for (e of equipos; track e.id) {
         <ion-item-sliding #deslizable>
-          <ion-item [button]="true" [detail]="true">
+          <ion-item [button]="true" [detail]="true" (click)="abrir(e)">
             <ion-label>
               <h2>{{ e.nombre }}</h2>
               <div class="miniaturas">

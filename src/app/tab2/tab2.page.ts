@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { AlertController, IonItemSliding } from '@ionic/angular';
+import { AlertController, IonItemSliding, NavController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { add, peopleOutline, trash } from 'ionicons/icons';
 import { Equipo, MAX_MIEMBROS } from '../models/equipo.model';
@@ -20,6 +20,7 @@ export class Tab2Page {
     private equipoService: EquipoService,
     private idioma: IdiomaService,
     private alertCtrl: AlertController,
+    private navCtrl: NavController,
     private cdr: ChangeDetectorRef
   ) {
     addIcons({ add, peopleOutline, trash });
@@ -35,7 +36,9 @@ export class Tab2Page {
       .sort((a, b) => b.actualizado - a.actualizado);
     this.cdr.markForCheck();
   }
-
+  abrir(equipo: Equipo) {
+    this.navCtrl.navigateForward(['/tabs/tab2/equipo', equipo.id]);
+  }
   async nuevoEquipo() {
     const alerta = await this.alertCtrl.create({
       header: this.idioma.t('equipos.nuevo'),
