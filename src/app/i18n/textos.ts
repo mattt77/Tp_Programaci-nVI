@@ -43,6 +43,17 @@ const es = {
   'selector.titulo': 'Elegir Pokémon',
   'selector.error': 'No se pudo cargar la lista de Pokémon.',
   'comun.guardar': 'Guardar',
+  'miembro.general': 'Nivel y naturaleza',
+  'miembro.nivel': 'Nivel',
+  'miembro.naturaleza': 'Naturaleza',
+  'miembro.ataques': 'Ataques',
+  'miembro.ataque': 'Ataque',
+  'miembro.ninguno': '— Ninguno —',
+  'miembro.evs': 'EVs',
+  'miembro.evsRestantes': 'Restantes',
+  'miembro.ivs': 'IVs',
+  'miembro.ivsAyuda': 'Valores de 0 a 31.',
+  'miembro.error': 'No se pudieron cargar los ataques.',
 };
 
 export type ClaveTexto = keyof typeof es;
@@ -90,6 +101,17 @@ const en: Record<ClaveTexto, string> = {
   'selector.titulo': 'Choose Pokémon',
   'selector.error': 'Could not load the Pokémon list.',
   'comun.guardar': 'Save',
+  'miembro.general': 'Level and nature',
+  'miembro.nivel': 'Level',
+  'miembro.naturaleza': 'Nature',
+  'miembro.ataques': 'Moves',
+  'miembro.ataque': 'Move',
+  'miembro.ninguno': '— None —',
+  'miembro.evs': 'EVs',
+  'miembro.evsRestantes': 'Left',
+  'miembro.ivs': 'IVs',
+  'miembro.ivsAyuda': 'Values from 0 to 31.',
+  'miembro.error': 'Could not load moves.',
 };
 
 export const TEXTOS: Record<Idioma, Record<ClaveTexto, string>> = { es, en };
