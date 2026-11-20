@@ -1,9 +1,49 @@
 <ion-header>
   <ion-toolbar color="danger">
-    <ion-title>Equipo</ion-title>
+    <ion-title>{{ 'equipos.titulo' | t }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <p>Próximamente.</p>
+<ion-content>
+  @if (equipos.length === 0) {
+    <div class="vacio">
+      <ion-icon name="people-outline"></ion-icon>
+      <p>{{ 'equipos.vacio' | t }}</p>
+    </div>
+  } @else {
+    <ion-list>
+      @for (e of equipos; track e.id) {
+        <ion-item-sliding #deslizable>
+          <ion-item [button]="true" [detail]="true">
+            <ion-label>
+              <h2>{{ e.nombre }}</h2>
+              <div class="miniaturas">
+                @for (m of e.miembros; track $index) {
+                  <ion-avatar>
+                    <img [src]="m.imagen" [alt]="m.name" />
+                  </ion-avatar>
+                } @empty {
+                  <p>{{ 'equipos.sinPokemon' | t }}</p>
+                }
+              </div>
+            </ion-label>
+            <ion-note slot="end">{{ e.miembros.length }}/{{ maxMiembros }}</ion-note>
+          </ion-item>
+
+          <ion-item-options side="end">
+            <ion-item-option color="danger" (click)="eliminar(e, deslizable)">
+              <ion-icon slot="icon-only" name="trash"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      }
+    </ion-list>
+    <p class="ayuda">{{ 'equipos.ayudaBorrar' | t }}</p>
+  }
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button color="danger" (click)="nuevoEquipo()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
