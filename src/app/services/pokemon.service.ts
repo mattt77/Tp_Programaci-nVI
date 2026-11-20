@@ -8,6 +8,8 @@ import { PokemonDetalle, PokemonItem } from '../models/pokemon.model';
 @Injectable({ providedIn: 'root' })
 export class PokemonService {
   private cacheGeneraciones = new Map<number, PokemonItem[]>();
+  private cacheDetalles = new Map<number, PokemonDetalle>();
+  private cacheTodos?: PokemonItem[];
 
   constructor(private http: HttpClient) {}
 
@@ -16,26 +18,34 @@ export class PokemonService {
     if (guardado) {
       return of(guardado);
     }
-    
+
     return this.http
       .get<any>(`${environment.pokeApiUrl}/generation/${numero}`)
       .pipe(
-        map((res): PokemonItem[] =>
-          res.pokemon_species
-            .map((especie: any) => {
-              const id = Number(especie.url.split('/').filter(Boolean).pop());
-              return {
-                id,
-                name: especie.name,
-                imagen: `${environment.spritesUrl}/${id}.png`,
-              };
-            })
-            .sort((a: PokemonItem, b: PokemonItem) => a.id - b.id)
-        ),
+        map((res) => this.aItems(res.pokemon_species)),
         tap((lista) => this.cacheGeneraciones.set(numero, lista))
       );
   }
-    getDetalle(id: number): Observable<PokemonDetalle> {
+
+  getTodos(): Observable<PokemonItem[]> {
+    if (this.cacheTodos) {
+      return of(this.cacheTodos);
+    }
+
+    return this.http
+      .get<any>(`${environment.pokeApiUrl}/pokemon-species?limit=2000`)
+      .pipe(
+        map((res) => this.aItems(res.results)),
+        tap((lista) => (this.cacheTodos = lista))
+      );
+  }
+
+  getDetalle(id: number): Observable<PokemonDetalle> {
+    const guardado = this.cacheDetalles.get(id);
+    if (guardado) {
+      return of(guardado);
+    }
+
     return this.http.get<any>(`${environment.pokeApiUrl}/pokemon/${id}`).pipe(
       map(
         (p): PokemonDetalle => ({
@@ -50,7 +60,22 @@ export class PokemonService {
             valor: s.base_stat,
           })),
         })
-      )
+      ),
+      tap((detalle) => this.cacheDetalles.set(id, detalle))
     );
+  }
+
+  // Convierte la lista de especies de la API en PokemonItem ordenados por número
+  private aItems(especies: any[]): PokemonItem[] {
+    return especies
+      .map((especie: any) => {
+        const id = Number(especie.url.split('/').filter(Boolean).pop());
+        return {
+          id,
+          name: especie.name,
+          imagen: `${environment.spritesUrl}/${id}.png`,
+        };
+      })
+      .sort((a, b) => a.id - b.id);
   }
 }
