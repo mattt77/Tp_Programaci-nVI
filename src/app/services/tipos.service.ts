@@ -14,7 +14,12 @@ export interface Efectividad {
   tipo: string;
   multiplicador: number;
 }
-
+export interface ResumenTipo {
+  tipo: string;
+  debiles: number;
+  resistentes: number;
+  inmunes: number;
+}
 interface RelacionesTipo {
   doble: string[];
   mitad: string[];
@@ -68,5 +73,22 @@ export class TiposService {
       tipo: t,
       multiplicador: this.multiplicador(t, defensores),
     }));
+  }
+    // Para cada tipo atacante, cuenta cuántos miembros son débiles, resistentes o inmunes
+  resumenEquipo(tiposMiembros: string[][]): ResumenTipo[] {
+    return TIPOS.map((tipo) => {
+      const resumen: ResumenTipo = { tipo, debiles: 0, resistentes: 0, inmunes: 0 };
+      tiposMiembros.forEach((defensores) => {
+        const x = this.multiplicador(tipo, defensores);
+        if (x === 0) {
+          resumen.inmunes++;
+        } else if (x > 1) {
+          resumen.debiles++;
+        } else if (x < 1) {
+          resumen.resistentes++;
+        }
+      });
+      return resumen;
+    });
   }
 }
