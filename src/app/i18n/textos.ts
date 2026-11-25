@@ -71,6 +71,18 @@ const es = {
   'exportar.copiado': 'Copiado al portapapeles',
   'exportar.errorCopiar': 'No se pudo copiar. Selecciona el texto y cópialo a mano.',
   'exportar.vacio': 'El equipo todavía no tiene Pokémon.',
+  'trivia.titulo': 'Trivia Pokémon',
+  'trivia.preguntaSilueta': '¿Quién es ese Pokémon?',
+  'trivia.preguntaTipoPokemon': '¿Cuál de estos tipos tiene {nombre}?',
+  'trivia.preguntaEficacia': '¿Qué tipo es súper eficaz contra el tipo {tipo}?',
+  'trivia.preguntaGeneracion': '¿De qué generación es {nombre}?',
+  'trivia.generacion': 'Generación',
+  'trivia.cat.silueta': '¿Quién es?',
+  'trivia.cat.tipos': 'Tipos',
+  'trivia.cat.generacion': 'Generación',
+  'trivia.dif.facil': 'Fácil',
+  'trivia.dif.normal': 'Normal',
+  'trivia.dif.dificil': 'Difícil',
 };
 
 export type ClaveTexto = keyof typeof es;
@@ -146,6 +158,18 @@ const en: Record<ClaveTexto, string> = {
   'exportar.copiado': 'Copied to clipboard',
   'exportar.errorCopiar': 'Could not copy. Select the text and copy it manually.',
   'exportar.vacio': 'This team has no Pokémon yet.',
+  'trivia.titulo': 'Pokémon Trivia',
+  'trivia.preguntaSilueta': "Who's that Pokémon?",
+  'trivia.preguntaTipoPokemon': 'Which of these types does {nombre} have?',
+  'trivia.preguntaEficacia': 'Which type is super effective against {tipo}?',
+  'trivia.preguntaGeneracion': 'Which generation is {nombre} from?',
+  'trivia.generacion': 'Generation',
+  'trivia.cat.silueta': "Who's that?",
+  'trivia.cat.tipos': 'Types',
+  'trivia.cat.generacion': 'Generation',
+  'trivia.dif.facil': 'Easy',
+  'trivia.dif.normal': 'Normal',
+  'trivia.dif.dificil': 'Hard',
 };
 
 export const TEXTOS: Record<Idioma, Record<ClaveTexto, string>> = { es, en };
