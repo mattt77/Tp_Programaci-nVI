@@ -4,6 +4,7 @@ import {
   ModalController,
   RangeCustomEvent,
   SelectCustomEvent,
+  ToggleCustomEvent,
 } from '@ionic/angular';
 import { forkJoin } from 'rxjs';
 import {
@@ -15,6 +16,8 @@ import {
   MAX_IV,
   MiembroEquipo,
 } from '../../models/equipo.model';
+import { EquipoService } from '../../services/equipo.service';
+import { FichasService } from '../../services/fichas.service';
 import { NombresService } from '../../services/nombres.service';
 import { PokemonService } from '../../services/pokemon.service';
 
@@ -35,18 +38,25 @@ export class EditorMiembroComponent implements OnInit {
   disponibles: string[] = [];  // ataques que puede aprender
   naturalezas: string[] = [];
 
+  eraShiny = false; // si ya era shiny al abrir el editor
+  fichas = 0;
+
   cargando = true;
   error = false;
 
   constructor(
     private modalCtrl: ModalController,
     private pokemonService: PokemonService,
+    private fichasService: FichasService,
+    public equipoService: EquipoService,
     public nombres: NombresService,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
     this.slots = this.posiciones.map((i) => this.miembro.ataques[i] ?? '');
+    this.eraShiny = this.miembro.shiny;
+    this.fichas = this.fichasService.cantidad();
     this.cargar();
   }
 
@@ -83,6 +93,11 @@ export class EditorMiembroComponent implements OnInit {
     return MAX_EVS_TOTAL - usados;
   }
 
+  // Se puede tocar si ya era shiny (no cuesta nada) o si hay fichas disponibles
+  get puedeCambiarShiny(): boolean {
+    return this.eraShiny || this.fichas > 0;
+  }
+
   // Opciones de un lugar: todos los ataques menos los elegidos en los otros lugares
   opciones(posicion: number): string[] {
     const elegidosEnOtros = this.slots.filter((a, i) => a && i !== posicion);
@@ -95,6 +110,10 @@ export class EditorMiembroComponent implements OnInit {
 
   cambiarNaturaleza(ev: SelectCustomEvent) {
     this.miembro.naturaleza = ev.detail.value;
+  }
+
+  cambiarShiny(ev: ToggleCustomEvent) {
+    this.miembro.shiny = ev.detail.checked;
   }
 
   cambiarAtaque(posicion: number, ev: SelectCustomEvent) {

@@ -29,12 +29,13 @@
   }
 
   @if (!cargando && !error) {
+    <!-- la imagen cambia a shiny al activar el toggle -->
     <div class="cabecera">
-      <img [src]="miembro.imagen" [alt]="miembro.name" />
+      <img [src]="equipoService.imagenDe(miembro)" [alt]="miembro.name" />
     </div>
 
     <ion-accordion-group [multiple]="true" [value]="['general', 'ataques']">
-      <!-- Nivel y naturaleza -->
+      <!-- Nivel, naturaleza y shiny -->
       <ion-accordion value="general">
         <ion-item slot="header">
           <ion-label>{{ 'miembro.general' | t }}</ion-label>
@@ -61,6 +62,25 @@
               }
             </ion-select>
           </ion-item>
+
+          <!-- toggle shiny -->
+          <ion-item lines="none">
+            <ion-toggle
+              justify="space-between"
+              [checked]="miembro.shiny"
+              [disabled]="!puedeCambiarShiny"
+              (ionChange)="cambiarShiny($event)"
+            >{{ 'miembro.shiny' | t }}</ion-toggle>
+          </ion-item>
+          <p class="nota">
+            @if (eraShiny) {
+              {{ 'miembro.costoShiny' | t }}
+            } @else if (fichas > 0) {
+              {{ 'miembro.fichas' | t }}: {{ fichas }}. {{ 'miembro.costoShiny' | t }}
+            } @else {
+              {{ 'miembro.sinFichas' | t }}
+            }
+          </p>
         </div>
       </ion-accordion>
 

@@ -37,6 +37,7 @@ import {
   IonTextarea,
   IonThumbnail,
   IonTitle,
+  IonToggle, 
   IonToolbar,
 } from '@ionic/angular';
 
@@ -88,6 +89,7 @@ import { TraducirPipe } from '../../pipes/traducir.pipe';
     IonTextarea,
     IonThumbnail,
     IonTitle,
+    IonToggle, 
     IonToolbar,
   ],
   declarations: [
