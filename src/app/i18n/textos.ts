@@ -105,6 +105,12 @@ const es = {
   'trivia.comoUsar': 'Úsalas en la pestaña Equipo: abre un Pokémon y activa "Shiny".',
   'trivia.sinPremio': 'Para ganar fichas shiny tienes que responder las 10 bien. ¡Inténtalo de nuevo!',
   'trivia.jugarOtra': 'Jugar otra vez',
+  'miembro.shiny': 'Shiny ✨',
+  'miembro.fichas': 'Fichas shiny disponibles',
+  'miembro.sinFichas': 'Gana fichas shiny respondiendo bien las 10 preguntas de la Trivia.',
+  'miembro.costoShiny': 'Activarlo usa 1 ficha al guardar. Si luego lo desactivas, la ficha vuelve.',
+  'editor.fichaUsada': 'Usaste 1 ficha shiny ✨',
+  'editor.fichaDevuelta': 'Se devolvió 1 ficha shiny',
 };
 
 export type ClaveTexto = keyof typeof es;
@@ -214,6 +220,12 @@ const en: Record<ClaveTexto, string> = {
   'trivia.comoUsar': 'Use them in the Team tab: open a Pokémon and turn on "Shiny".',
   'trivia.sinPremio': 'You need all 10 correct to earn shiny tokens. Try again!',
   'trivia.jugarOtra': 'Play again',
+  'miembro.shiny': 'Shiny ✨',
+  'miembro.fichas': 'Shiny tokens available',
+  'miembro.sinFichas': 'Earn shiny tokens by answering all 10 Trivia questions correctly.',
+  'miembro.costoShiny': 'Turning it on uses 1 token when you save. If you turn it off later, the token comes back.',
+  'editor.fichaUsada': 'You used 1 shiny token ✨',
+  'editor.fichaDevuelta': '1 shiny token was returned',
 };
 
 export const TEXTOS: Record<Idioma, Record<ClaveTexto, string>> = { es, en };
