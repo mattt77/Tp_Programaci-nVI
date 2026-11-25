@@ -8,13 +8,42 @@
   margin: 4px 4px 0 0;
 }
 
+.ataques {
+  font-size: 12px;
+  margin-top: 4px;
+}
+
 .ayuda {
   text-align: center;
   font-size: 13px;
   color: var(--ion-color-medium);
   padding: 0 16px;
 }
-.ataques {
-  font-size: 12px;
-  margin-top: 4px;
+
+.centrado {
+  text-align: center;
+  padding: 24px 16px;
+}
+
+.tabla {
+  font-size: 14px;
+
+  ion-row {
+    align-items: center;
+    border-bottom: 1px solid var(--ion-color-step-150, #ddd);
+  }
+
+  ion-col:not(:first-child) {
+    text-align: center;
+  }
+
+  .encabezado {
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--ion-color-medium);
+  }
+
+  .peligro {
+    background: rgba(var(--ion-color-danger-rgb), 0.15);
+  }
 }

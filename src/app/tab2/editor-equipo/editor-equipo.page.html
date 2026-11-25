@@ -5,56 +5,114 @@
     </ion-buttons>
     <ion-title>{{ equipo?.nombre }}</ion-title>
     <ion-buttons slot="end">
+      <ion-button (click)="exportar()">
+        <ion-icon slot="icon-only" name="share-outline"></ion-icon>
+      </ion-button>
       <ion-button (click)="renombrar()">
         <ion-icon slot="icon-only" name="create"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment [value]="vista" (ionChange)="cambiarVista($event)">
+      <ion-segment-button value="miembros">
+        <ion-label>{{ 'editor.vistaPokemon' | t }}</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="debilidades">
+        <ion-label>{{ 'detalle.debilidades' | t }}</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
   @if (equipo) {
-    <ion-list>
-      @for (m of equipo.miembros; track $index; let i = $index) {
-        <ion-item-sliding #deslizable>
-          <ion-item [button]="true" [detail]="true" (click)="editar(i)">
-            <ion-avatar slot="start">
-              <img [src]="m.imagen" [alt]="m.name" />
-            </ion-avatar>
-            <ion-label>
-              <h2>{{ m.name | titlecase }}</h2>
-              <div>
-                @for (t of m.tipos; track t) {
-                  <ion-chip class="tipo">
-                    <ion-label>{{ nombres.tipo(t) }}</ion-label>
-                  </ion-chip>
+    <!-- Vista: Pokémon del equipo -->
+    @if (vista === 'miembros') {
+      <ion-list>
+        @for (m of equipo.miembros; track $index; let i = $index) {
+          <ion-item-sliding #deslizable>
+            <ion-item [button]="true" [detail]="true" (click)="editar(i)">
+              <ion-avatar slot="start">
+                <img [src]="m.imagen" [alt]="m.name" />
+              </ion-avatar>
+              <ion-label>
+                <h2>{{ m.name | titlecase }}</h2>
+                <div>
+                  @for (t of m.tipos; track t) {
+                    <ion-chip class="tipo">
+                      <ion-label>{{ nombres.tipo(t) }}</ion-label>
+                    </ion-chip>
+                  }
+                </div>
+                @if (m.ataques.length > 0) {
+                  <p class="ataques">{{ resumenAtaques(m) }}</p>
                 }
-              </div>
-              @if (m.ataques.length > 0) {
-                <p class="ataques">{{ resumenAtaques(m) }}</p>
-              }
-            </ion-label>
-            <ion-note slot="end">{{ 'editor.nivel' | t }} {{ m.nivel }}</ion-note>
+              </ion-label>
+              <ion-note slot="end">{{ 'editor.nivel' | t }} {{ m.nivel }}</ion-note>
+            </ion-item>
+
+            <ion-item-options side="end">
+              <ion-item-option color="danger" (click)="quitar(i, deslizable)">
+                <ion-icon slot="icon-only" name="trash"></ion-icon>
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        }
+
+        @for (l of libres; track l) {
+          <ion-item [button]="true" class="libre" (click)="agregar()">
+            <ion-icon slot="start" name="add"></ion-icon>
+            <ion-label>{{ 'editor.agregar' | t }}</ion-label>
           </ion-item>
+        }
+      </ion-list>
 
-          <ion-item-options side="end">
-            <ion-item-option color="danger" (click)="quitar(i, deslizable)">
-              <ion-icon slot="icon-only" name="trash"></ion-icon>
-            </ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
+      @if (equipo.miembros.length > 0) {
+        <p class="ayuda">{{ 'editor.ayudaQuitar' | t }}</p>
       }
+    }
 
-      @for (l of libres; track l) {
-        <ion-item [button]="true" class="libre" (click)="agregar()">
-          <ion-icon slot="start" name="add"></ion-icon>
-          <ion-label>{{ 'editor.agregar' | t }}</ion-label>
-        </ion-item>
+    <!-- Vista: debilidades del equipo -->
+    @if (vista === 'debilidades') {
+      @if (equipo.miembros.length === 0) {
+        <p class="ayuda">{{ 'debilidades.vacio' | t }}</p>
+      } @else if (tiposError) {
+        <div class="centrado">
+          <ion-text color="danger">
+            <p>{{ 'debilidades.error' | t }}</p>
+          </ion-text>
+          <ion-button (click)="cargarTipos()">{{ 'comun.reintentar' | t }}</ion-button>
+        </div>
+      } @else if (!tiposListos) {
+        <div class="centrado">
+          <ion-spinner name="crescent"></ion-spinner>
+        </div>
+      } @else {
+        <ion-grid class="tabla">
+          <ion-row class="encabezado">
+            <ion-col size="4">{{ 'debilidades.tipo' | t }}</ion-col>
+            <ion-col>{{ 'debilidades.debiles' | t }}</ion-col>
+            <ion-col>{{ 'debilidades.resisten' | t }}</ion-col>
+            <ion-col>{{ 'debilidades.inmunes' | t }}</ion-col>
+          </ion-row>
+          @for (r of resumen; track r.tipo) {
+            <ion-row [class.peligro]="r.debiles >= 3">
+              <ion-col size="4">{{ nombres.tipo(r.tipo) }}</ion-col>
+              <ion-col>
+                <ion-badge [color]="r.debiles > 0 ? 'danger' : 'medium'">{{ r.debiles }}</ion-badge>
+              </ion-col>
+              <ion-col>
+                <ion-badge [color]="r.resistentes > 0 ? 'success' : 'medium'">{{ r.resistentes }}</ion-badge>
+              </ion-col>
+              <ion-col>
+                <ion-badge [color]="r.inmunes > 0 ? 'tertiary' : 'medium'">{{ r.inmunes }}</ion-badge>
+              </ion-col>
+            </ion-row>
+          }
+        </ion-grid>
+        <p class="ayuda">{{ 'debilidades.ayuda' | t }}</p>
       }
-    </ion-list>
-
-    @if (equipo.miembros.length > 0) {
-      <p class="ayuda">{{ 'editor.ayudaQuitar' | t }}</p>
     }
   }
 </ion-content>
