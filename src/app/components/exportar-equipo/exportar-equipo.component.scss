@@ -1,0 +1,13 @@
+.ayuda {
+  font-size: 13px;
+  color: var(--ion-color-medium);
+}
+
+.texto {
+  font-family: monospace;
+  font-size: 13px;
+  --background: var(--ion-color-step-100, #f4f5f8);
+  --padding-start: 12px;
+  --padding-end: 12px;
+  border-radius: 8px;
+}

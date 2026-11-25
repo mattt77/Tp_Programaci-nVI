@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar color="danger">
+    <ion-title>{{ 'exportar.titulo' | t }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrar()">{{ 'comun.cerrar' | t }}</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  @if (idioma.idioma === 'es') {
+    <ion-toolbar>
+      <ion-segment [value]="modo" (ionChange)="cambiarModo($event)">
+        <ion-segment-button value="showdown">
+          <ion-label>{{ 'exportar.showdown' | t }}</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="traducido">
+          <ion-label>{{ 'exportar.traducido' | t }}</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-toolbar>
+  }
+</ion-header>
+
+<ion-content class="ion-padding">
+  @if (equipo.miembros.length === 0) {
+    <p class="ayuda">{{ 'exportar.vacio' | t }}</p>
+  } @else {
+    <p class="ayuda">
+      {{ (modo === 'showdown' ? 'exportar.ayudaShowdown' : 'exportar.ayudaTraducido') | t }}
+    </p>
+    <ion-textarea
+      class="texto"
+      [value]="texto"
+      [readonly]="true"
+      [autoGrow]="true"
+    ></ion-textarea>
+  }
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button
+      expand="block"
+      [disabled]="equipo.miembros.length === 0"
+      (click)="copiar()"
+    >
+      <ion-icon slot="start" name="copy-outline"></ion-icon>
+      {{ 'exportar.copiar' | t }}
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>
