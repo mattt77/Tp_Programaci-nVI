@@ -70,7 +70,7 @@ export class NombresService {
       .join(' ');
   }
 
-  private buscar(grupo: keyof NombresDatos, clave: string, idioma: Idioma): string {
+  buscar(grupo: keyof NombresDatos, clave: string, idioma: Idioma): string {
     return this.datos[idioma][grupo][clave] ?? this.formatear(clave);
   }
 }
