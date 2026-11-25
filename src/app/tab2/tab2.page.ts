@@ -2,8 +2,9 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { AlertController, IonItemSliding, NavController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { add, peopleOutline, trash } from 'ionicons/icons';
-import { Equipo, MAX_MIEMBROS } from '../models/equipo.model';
+import { Equipo, MAX_MIEMBROS, MiembroEquipo } from '../models/equipo.model';
 import { EquipoService } from '../services/equipo.service';
+import { FichasService } from '../services/fichas.service';
 import { IdiomaService } from '../services/idioma.service';
 
 @Component({
@@ -18,6 +19,7 @@ export class Tab2Page {
 
   constructor(
     private equipoService: EquipoService,
+    private fichasService: FichasService,
     private idioma: IdiomaService,
     private alertCtrl: AlertController,
     private navCtrl: NavController,
@@ -36,9 +38,15 @@ export class Tab2Page {
       .sort((a, b) => b.actualizado - a.actualizado);
     this.cdr.markForCheck();
   }
+
   abrir(equipo: Equipo) {
     this.navCtrl.navigateForward(['/tabs/tab2/equipo', equipo.id]);
   }
+
+  imagen(miembro: MiembroEquipo): string {
+    return this.equipoService.imagenDe(miembro);
+  }
+
   async nuevoEquipo() {
     const alerta = await this.alertCtrl.create({
       header: this.idioma.t('equipos.nuevo'),
@@ -75,6 +83,11 @@ export class Tab2Page {
           text: this.idioma.t('comun.eliminar'),
           role: 'destructive',
           handler: () => {
+            // Devuelve las fichas de los Pokémon shiny del equipo borrado
+            const shinys = equipo.miembros.filter((m) => m.shiny).length;
+            if (shinys > 0) {
+              this.fichasService.sumar(shinys);
+            }
             this.equipoService.eliminar(equipo.id);
             this.cargar();
           },

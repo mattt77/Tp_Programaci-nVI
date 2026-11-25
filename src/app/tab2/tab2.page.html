@@ -20,7 +20,7 @@
               <div class="miniaturas">
                 @for (m of e.miembros; track $index) {
                   <ion-avatar>
-                    <img [src]="m.imagen" [alt]="m.name" />
+                    <img [src]="imagen(m)" [alt]="m.name" />
                   </ion-avatar>
                 } @empty {
                   <p>{{ 'equipos.sinPokemon' | t }}</p>
