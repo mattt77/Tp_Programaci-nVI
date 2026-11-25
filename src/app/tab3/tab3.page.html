@@ -1,9 +1,171 @@
 <ion-header>
   <ion-toolbar color="danger">
-    <ion-title>Trivia</ion-title>
+    <ion-title>{{ 'trivia.titulo' | t }}</ion-title>
+    @if (estado === 'ruleta' || estado === 'pregunta') {
+      <ion-buttons slot="end">
+        <ion-button (click)="volverAlInicio()">{{ 'trivia.salir' | t }}</ion-button>
+      </ion-buttons>
+    }
   </ion-toolbar>
+
+  @if (estado === 'ruleta' || estado === 'pregunta') {
+    <ion-toolbar>
+      <div class="progreso">
+        <span>{{ 'trivia.pregunta' | t }} {{ numero }}/{{ totalPreguntas }}</span>
+        <span>{{ 'trivia.aciertos' | t }}: {{ aciertos }}</span>
+      </div>
+      <ion-progress-bar [value]="numero / totalPreguntas"></ion-progress-bar>
+    </ion-toolbar>
+  }
 </ion-header>
 
 <ion-content class="ion-padding">
-  <p>Próximamente.</p>
+  @switch (estado) {
+    <!-- Inicio -->
+    @case ('inicio') {
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>{{ 'trivia.titulo' | t }}</ion-card-title>
+          <ion-card-subtitle>{{ 'trivia.subtitulo' | t }}</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <p>{{ 'trivia.reglas' | t }}</p>
+          <p class="fichas">
+            <ion-icon name="sparkles"></ion-icon>
+            {{ 'trivia.tusFichas' | t }}:
+            <ion-badge color="warning">{{ fichas }}</ion-badge>
+          </p>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-list>
+        <ion-radio-group [value]="dificultad" (ionChange)="cambiarDificultad($event)">
+          <ion-list-header>
+            <ion-label>{{ 'trivia.dificultad' | t }}</ion-label>
+          </ion-list-header>
+          @for (d of dificultades; track d) {
+            <ion-item>
+              <ion-radio [value]="d" justify="space-between">{{ 'trivia.dif.' + d | t }}</ion-radio>
+            </ion-item>
+          }
+        </ion-radio-group>
+      </ion-list>
+
+      <p class="ayuda">{{ 'trivia.premio' | t }}: {{ recompensaActual }}</p>
+
+      @if (error) {
+        <ion-text color="danger">
+          <p class="centrado">{{ 'trivia.errorPreparar' | t }}</p>
+        </ion-text>
+      }
+
+      <ion-button expand="block" [disabled]="cargando" (click)="comenzar()">
+        @if (cargando) {
+          <ion-spinner name="dots"></ion-spinner>
+        } @else {
+          {{ 'trivia.comenzar' | t }}
+        }
+      </ion-button>
+    }
+
+    <!-- Ruleta -->
+    @case ('ruleta') {
+      <div class="ruleta-contenedor">
+        <div class="flecha"></div>
+        <div class="ruleta" [style.transform]="'rotate(' + rotacion + 'deg)'">
+          @for (c of categorias; track c; let i = $index) {
+            <span
+              class="etiqueta"
+              [style.transform]="'rotate(' + angulo(i) + 'deg) translateY(-70px)'"
+            >{{ 'trivia.cat.' + c | t }}</span>
+          }
+        </div>
+      </div>
+
+      @if (cargando) {
+        <div class="centrado"><ion-spinner name="crescent"></ion-spinner></div>
+      } @else if (error) {
+        <div class="centrado">
+          <ion-text color="danger"><p>{{ 'trivia.errorPregunta' | t }}</p></ion-text>
+          <ion-button (click)="cargarPregunta()">{{ 'comun.reintentar' | t }}</ion-button>
+        </div>
+      } @else {
+        <ion-button expand="block" [disabled]="girando" (click)="girar()">
+          {{ 'trivia.girar' | t }}
+        </ion-button>
+      }
+    }
+
+    <!-- Pregunta -->
+    @case ('pregunta') {
+      @if (pregunta) {
+        <ion-chip color="primary">
+          <ion-label>{{ 'trivia.cat.' + pregunta.categoria | t }}</ion-label>
+        </ion-chip>
+
+        @if (pregunta.imagen) {
+          <div class="imagen">
+            <img
+              [src]="pregunta.imagen"
+              alt=""
+              [class.silueta]="pregunta.silueta && elegida === null"
+            />
+          </div>
+        }
+
+        <h2 class="enunciado">{{ pregunta.enunciado }}</h2>
+
+        @for (op of pregunta.opciones; track $index; let i = $index) {
+          <ion-button
+            expand="block"
+            [color]="colorOpcion(i)"
+            [fill]="elegida === null ? 'outline' : 'solid'"
+            (click)="responder(i)"
+          >{{ op }}</ion-button>
+        }
+
+        @if (elegida !== null) {
+          <div class="centrado">
+            @if (elegida === pregunta.correcta) {
+              <ion-text color="success">
+                <h3><ion-icon name="checkmark-circle"></ion-icon> {{ 'trivia.correcto' | t }}</h3>
+              </ion-text>
+            } @else {
+              <ion-text color="danger">
+                <h3><ion-icon name="close-circle"></ion-icon> {{ 'trivia.incorrecto' | t }}</h3>
+              </ion-text>
+            }
+          </div>
+          <ion-button expand="block" (click)="siguiente()">
+            {{ (numero < totalPreguntas ? 'trivia.siguiente' : 'trivia.verResultado') | t }}
+          </ion-button>
+        }
+      }
+    }
+
+    <!-- Resultado -->
+    @case ('resultado') {
+      <ion-card class="centrado">
+        <ion-card-header>
+          <ion-card-title>{{ 'trivia.resultado' | t }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <h1 class="puntaje">{{ aciertos }}/{{ totalPreguntas }}</h1>
+          @if (ganadas > 0) {
+            <ion-text color="warning">
+              <h2><ion-icon name="sparkles"></ion-icon> {{ 'trivia.ganaste' | t }} {{ ganadas }}</h2>
+            </ion-text>
+            <p>{{ 'trivia.comoUsar' | t }}</p>
+          } @else {
+            <p>{{ 'trivia.sinPremio' | t }}</p>
+          }
+          <p class="fichas">
+            {{ 'trivia.tusFichas' | t }}:
+            <ion-badge color="warning">{{ fichas }}</ion-badge>
+          </p>
+        </ion-card-content>
+      </ion-card>
+      <ion-button expand="block" (click)="volverAlInicio()">{{ 'trivia.jugarOtra' | t }}</ion-button>
+    }
+  }
 </ion-content>

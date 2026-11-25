@@ -1,0 +1,39 @@
+.centrado { text-align: center; padding: 16px; }
+.ayuda { text-align: center; font-size: 13px; color: var(--ion-color-medium); }
+.fichas { display: flex; align-items: center; gap: 6px; }
+.progreso { display: flex; justify-content: space-between; padding: 4px 16px; font-size: 13px; }
+
+.ruleta-contenedor { position: relative; width: 220px; margin: 24px auto; }
+
+.flecha {
+  position: absolute; top: -6px; left: 50%; transform: translateX(-50%); z-index: 2;
+  border-left: 14px solid transparent; border-right: 14px solid transparent;
+  border-top: 26px solid var(--ion-text-color, #000);
+}
+
+.ruleta {
+  position: relative; width: 220px; height: 220px; border-radius: 50%;
+  border: 6px solid #fff; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  /* 3 sectores de 120°, uno por categoría */
+  background: conic-gradient(
+    var(--ion-color-danger) 0deg 120deg,
+    var(--ion-color-primary) 120deg 240deg,
+    var(--ion-color-warning) 240deg 360deg
+  );
+  transition: transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.etiqueta {
+  position: absolute; top: 50%; left: 50%; width: 100px;
+  margin: -10px 0 0 -50px; text-align: center;
+  color: #fff; font-weight: 700; font-size: 14px;
+}
+
+.imagen {
+  text-align: center;
+  img { width: 180px; height: 180px; transition: filter 0.4s; }
+  .silueta { filter: brightness(0); }
+}
+
+.enunciado { text-align: center; font-size: 18px; }
+.puntaje { font-size: 48px; font-weight: 700; }
