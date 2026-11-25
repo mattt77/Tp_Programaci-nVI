@@ -34,10 +34,15 @@
           <ion-item-sliding #deslizable>
             <ion-item [button]="true" [detail]="true" (click)="editar(i)">
               <ion-avatar slot="start">
-                <img [src]="m.imagen" [alt]="m.name" />
+                <img [src]="imagen(m)" [alt]="m.name" />
               </ion-avatar>
               <ion-label>
-                <h2>{{ m.name | titlecase }}</h2>
+                <h2>
+                  {{ m.name | titlecase }}
+                  @if (m.shiny) {
+                    <ion-icon name="sparkles" color="warning"></ion-icon>
+                  }
+                </h2>
                 <div>
                   @for (t of m.tipos; track t) {
                     <ion-chip class="tipo">
