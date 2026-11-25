@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PokemonDetalle } from '../models/pokemon.model';
 import { CLAVES_STATS, Equipo, MiembroEquipo, Stats } from '../models/equipo.model';
-
+import { environment } from '../../environments/environment';
 @Injectable({ providedIn: 'root' })
 export class EquipoService {
   private readonly clave = 'pokedex-equipos';
@@ -61,6 +61,12 @@ export class EquipoService {
       ivs: this.statsEn(31),
       shiny: false,
     };
+  }
+    // Imagen oficial normal o shiny según el miembro
+  imagenDe(miembro: MiembroEquipo): string {
+    return miembro.shiny
+      ? `${environment.spritesUrl}/other/official-artwork/shiny/${miembro.pokemonId}.png`
+      : miembro.imagen;
   }
 
   private statsEn(valor: number): Stats {
